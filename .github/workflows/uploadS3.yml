@@ -4,8 +4,8 @@ on:
     branches: [master]
 
 jobs:
-  deploy:
-    name: Deploy
+  upload:
+    name: Upload
     runs-on: ubuntu-latest
 
     steps:
@@ -14,10 +14,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get diff
+      - name: Upload diff files
         run: |
-            for file in $(git diff ${{github.event.before}}..${{github.event.after}} --name-only) ; do
-            echo $file
+            for file in $(git diff ${{github.event.before}}..${{github.event.after}} --name-only -- '*.md') ; do
             aws s3 cp $file s3://articles-for-comprehend-me/ja/
             done
         env:
