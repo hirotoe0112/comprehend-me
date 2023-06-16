@@ -24,13 +24,20 @@ export const handler = async(event: any) => {
     const response = await s3.send(getObjectCommand);
     const body = await response.Body?.transformToString();
 
+    if(!body) return
+
+    /**
+     * 最初の6行を削除
+     */
+    const formattedBody = body.split('\n').slice(6).join('\n')
+
     /**
      * 取得した内容を英語に翻訳
     */
     const translateTextCommand = new TranslateTextCommand({
         SourceLanguageCode: "ja",
         TargetLanguageCode: "en",
-        Text: body
+        Text: formattedBody
     });
     const result = await translate.send(translateTextCommand)
     const translatedText = result.TranslatedText
