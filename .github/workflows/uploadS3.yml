@@ -9,17 +9,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get latest code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      #- name: Get latest code
+      #  uses: actions/checkout@v3
+      #  with:
+      #    fetch-depth: 0
 
       - name: Get diff
         run: |
             for file in $(git diff ${{github.event.before}}..${{github.event.after}} --name-only) ; do
             echo $file
             done
-            for file in $(git diff --name-only); do
-            echo file
-            done
-            git diff --name-only origin/master...HEAD
