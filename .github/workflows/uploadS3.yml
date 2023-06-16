@@ -16,6 +16,7 @@ jobs:
 
       - name: Get diff
         run: |
+            echo "aaaaaa"
             for file in $(git diff origin/master...HEAD); do
             echo file
             done
