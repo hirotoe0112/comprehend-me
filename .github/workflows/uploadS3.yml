@@ -16,7 +16,7 @@ jobs:
 
       - name: Get diff
         run: |
-            for file in $(git diff origin/master...HEAD);do
-              echo file
+            for file in $(git diff origin/master...HEAD); do
+            echo file
             done
             git diff --name-only origin/master...HEAD
