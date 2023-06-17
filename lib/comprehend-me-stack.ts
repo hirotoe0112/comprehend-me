@@ -32,5 +32,24 @@ export class ComprehendMeStack extends cdk.Stack {
       }
     )
 
+    const comprehendFunction = new NodejsFunction(this, 'comprehend-function', {
+      functionName: 'comprehend-function',
+      entry: 'lambda/comprehend-function.ts'
+    })
+    comprehendFunction.addToRolePolicy(new PolicyStatement({
+      resources: [`${s3bucket.bucketArn}/*`],
+      actions: ['s3:GetObject', 's3:PutObject'],
+    }))
+    comprehendFunction.addToRolePolicy(new PolicyStatement({
+      resources: ['*'],
+      actions: ['comprehend:BatchDetectTargetedSentiment'],
+    }))
+
+    s3bucket.addEventNotification(
+      EventType.OBJECT_CREATED_PUT,
+      new LambdaDestination(comprehendFunction), {
+        prefix: 'en/'
+      }
+    )
   }
 }
