@@ -10,7 +10,9 @@ export class ComprehendMeStack extends cdk.Stack {
     super(scope, id, props);
 
     const s3bucket = new Bucket(this, 'ArticlesForComprehendMe', {
-      bucketName: 'articles-for-comprehend-me'
+      bucketName: 'articles-for-comprehend-me',
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
     })
     const translateFunction = new NodejsFunction(this, 'translate-function', {
       functionName: 'translate-function',
